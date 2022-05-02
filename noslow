@@ -1,19 +1,8 @@
-local Players = game:GetService"Players";
-local Client = Players.LocalPlayer
-
-function InfiniteStamina()
-   local BodyEffects = Client.Character:WaitForChild"BodyEffects";
-   local Defense, Movement, Reload = BodyEffects:WaitForChild"Defense", BodyEffects:WaitForChild"Movement", BodyEffects:WaitForChild"Reload"
-   
-   while wait() do
-       Reload.Value = false
-       Defense.Value = 9e9
-       
-       for _, v in next, Movement:GetChildren() do
-           if v then
-               v:Destroy()
-           end
-       end
-   end
+local mt = getrawmetatable(game)
+local backup
+backup = hookfunction(mt.__newindex, newcclosure(function(self, key, value)
+if key == "WalkSpeed" and value < 16 then
+value = 16
 end
-InfiniteStamina()
+return backup(self, key, value)
+end))
